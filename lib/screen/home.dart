@@ -1,4 +1,4 @@
-import 'package:automatic_gate/model/dataModel.dart';
+import 'package:automatic_gate/model/dataRaspberry.dart';
 import 'package:automatic_gate/utils/auth_helper.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -9,56 +9,40 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
+
+
+
   final referenceDatabase = FirebaseDatabase.instance;
   var retrieveData="";
   String name="";
 
+
+  Widget _mainScaffold(){
+    final ref = referenceDatabase.reference().child("Data");
+    return Scaffold(
+      body: StreamBuilder(
+        stream: ref.onValue,
+        builder: (context, snapshot){
+          if(snapshot.hasData &&
+          !snapshot.hasError &&
+          snapshot.data.snapshot.value != null){
+            print("Snapshot Data : ${snapshot.data.snapshot.value.toString()}");
+
+            var _dataRaspberry = DataRaspberry.fromJSON(snapshot.data.snapshot.value);
+              print("Data Raspberry : ${_dataRaspberry.ambient} / ${_dataRaspberry.relay} / ${_dataRaspberry.threshold}" );
+
+          }else{}
+          return Container();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ref = referenceDatabase.reference().child("Data");
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Home Page"),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Home Page"),
-            RaisedButton(
-              child: Text("Logout"),
-              onPressed: (){
-                AuthHelper.logOut();
-              },
-            ),
-            RaisedButton(
-              child: Text("Set Data"),
-              onPressed: (){
-                ref.child("ambient").set(name);
-              },
-            ),
-            RaisedButton(
-              child: Text("Read Data"),
-              onPressed: (){
-                ref.child("ambient").once().then((DataSnapshot data) {
-                  setState(() {
-                    print(data.value);
-                  });
-                });
-              },
-            ),
-            TextField(
-              onChanged: (val){
-                setState(() {
-                  name = val;
-                });
-              },
-            )
-          ],
-        ),
-      ),
-    );
+    return _mainScaffold();
   }
 }
 
