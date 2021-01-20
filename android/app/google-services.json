@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "311263712458",
+    "project_id": "automatics-gate",
+    "storage_bucket": "automatics-gate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311263712458:android:b1f4110b9a07000fa51033",
+        "android_client_info": {
+          "package_name": "itera.ac.id.automatic_gate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "311263712458-5j7mjc00u82igtepo00sb3d4b543nu6h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "itera.ac.id.automatic_gate",
+            "certificate_hash": "955e4ff1d9f32f0228849624fe8a367ed340dfef"
+          }
+        },
+        {
+          "client_id": "311263712458-fcfkfuo6fa949fr387hmk86d1gsnrug1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHoE-YaK82BTng-LYUS7-hxFOaGmil_QE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "311263712458-fcfkfuo6fa949fr387hmk86d1gsnrug1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
