@@ -1,3 +1,4 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
-const mainColor = Color(0xff2470c7);
+HexColor mainColor = HexColor("#023745");

@@ -96,7 +96,20 @@ class _LoginPageState extends State<LoginPage> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              if(email.isEmpty || password.isEmpty){
+                print("Email and password cannot be empty");
+                return;
+              }
+              try {
+                final user = await AuthHelper.signInWithEmail(email: email.trim(), password: password.trim());
+                if(user != null){
+                  print("Login Successfully");
+                }
+              }catch(e){
+                print(e);
+              }
+            },
             child: Text(
               "Login",
               style: TextStyle(
@@ -116,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: EdgeInsets.only(top:48),
+          padding: EdgeInsets.only(top:10),
           child: FlatButton(
             onPressed: (){},
             child: RichText(
@@ -152,7 +165,13 @@ class _LoginPageState extends State<LoginPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         GestureDetector(
-          onTap: (){},
+          onTap: () async {
+            try{
+              await AuthHelper.signInWithGoogle();
+            }catch(e){
+              print(e);
+            }
+          },
           child: Container(
             height: 60.0,
             width: 60.0,
@@ -184,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           margin: EdgeInsets.only(bottom: 20),
           child: Text(
-            "atau",
+            "or",
             style: TextStyle(
               fontWeight: FontWeight.w400,
             ),
