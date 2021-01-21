@@ -5,6 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,9 +19,10 @@ class _HomePageState extends State<HomePage>
   int tabIndex = 0;
   double threshold, calibrate;
 
-  final referenceDatabase = FirebaseDatabase.instance;
+  // final referenceDatabase = FirebaseDatabase.instance;
+  final ref = FirebaseDatabase.instance.reference().child("Data");
   var retrieveData = "";
-  String name = "";
+
 
   @override
   void initState() {
@@ -34,10 +37,18 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _mainScaffold() {
-    final ref = referenceDatabase.reference().child("Data");
     return Scaffold(
       appBar: AppBar(
         title: Text("Automatic Gate"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout,color: Colors.white,),
+            color: Colors.white,
+            onPressed: (){
+              AuthHelper.logOut();
+            },
+          ),
+        ],
         centerTitle: true,
         bottom: TabBar(
           controller: _tabController,
@@ -48,10 +59,10 @@ class _HomePageState extends State<HomePage>
           },
           tabs: [
             Tab(
-              icon: Icon(Icons.thermostat_outlined),
+              icon: Icon(Icons.home_work),
             ),
             Tab(
-              icon: Icon(Icons.add_road_rounded),
+              icon: Icon(Icons.thermostat_rounded),
             ),
             Tab(
               icon: Icon(Icons.add_road_rounded),
@@ -180,9 +191,10 @@ class _HomePageState extends State<HomePage>
   Widget _calibrateMenu(){
     return SafeArea(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.all(20),
+            margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
@@ -213,7 +225,7 @@ class _HomePageState extends State<HomePage>
             ),
           ),
           Container(
-            margin: EdgeInsets.all(20),
+            margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
@@ -237,7 +249,7 @@ class _HomePageState extends State<HomePage>
                       fontWeight: FontWeight.bold
                   ),
                 ),
-                _buildSetValue()
+                _buildRelayState()
               ],
             ),
           ),
@@ -273,7 +285,7 @@ class _HomePageState extends State<HomePage>
         keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
         onChanged: (value) {
           setState(() {
-            threshold = double.parse(value);
+            calibrate = double.parse(value);
           });
         },
         decoration: InputDecoration(
@@ -292,7 +304,7 @@ class _HomePageState extends State<HomePage>
       children: [
         Container(
           height: 1.4 * (MediaQuery.of(context).size.height / 20),
-          width: 5 * (MediaQuery.of(context).size.width / 10),
+          width: 5 * (MediaQuery.of(context).size.width / 8),
           margin: EdgeInsets.symmetric(vertical: 20),
           child: RaisedButton(
             elevation: 5.0,
@@ -300,7 +312,10 @@ class _HomePageState extends State<HomePage>
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
-            onPressed: () {},
+            onPressed: (){
+              ref.child("threshold").set(threshold);
+              ref.child("calibrate").set(calibrate);
+            },
             child: Text(
               "Set Value",
               style: TextStyle(
@@ -315,9 +330,39 @@ class _HomePageState extends State<HomePage>
     );
   }
 
+  Widget _buildRelayState(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(10.0),
+          child: ToggleSwitch(
+            initialLabelIndex: 0,
+            minWidth: 120,
+            labels: [
+              "Off",
+              "On"
+            ],
+            fontSize: 22.0,
+            cornerRadius: 30,
+            icons: [
+              Icons.power_settings_new_rounded,
+              Icons.lightbulb,
+            ],
+            inactiveBgColor: Colors.white,
+            onToggle: (int index){
+              ref.child("relay").set(index);
+            },
+            changeOnTap: true,
+            activeBgColor: mainColor,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ref = referenceDatabase.reference().child("Data");
     return _mainScaffold();
   }
 }
