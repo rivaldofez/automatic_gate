@@ -97,16 +97,17 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius: BorderRadius.circular(30.0),
             ),
             onPressed: () async {
-              if(email.isEmpty || password.isEmpty){
+              if (email.isEmpty || password.isEmpty) {
                 print("Email and password cannot be empty");
                 return;
               }
               try {
-                final user = await AuthHelper.signInWithEmail(email: email.trim(), password: password.trim());
-                if(user != null){
+                final user = await AuthHelper.signInWithEmail(
+                    email: email.trim(), password: password.trim());
+                if (user != null) {
                   print("Login Successfully");
                 }
-              }catch(e){
+              } catch (e) {
                 print(e);
               }
             },
@@ -124,14 +125,14 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildContactAdmin(){
+  Widget _buildContactAdmin() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: EdgeInsets.only(top:10),
+          padding: EdgeInsets.only(top: 10),
           child: FlatButton(
-            onPressed: (){},
+            onPressed: () {},
             child: RichText(
               text: TextSpan(
                 children: [
@@ -139,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                     text: "Dont have an account? ",
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: MediaQuery.of(context).size.height/40,
+                      fontSize: MediaQuery.of(context).size.height / 40,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -147,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                     text: "Contact Admin",
                     style: TextStyle(
                       color: mainColor,
-                      fontSize: MediaQuery.of(context).size.height/40,
+                      fontSize: MediaQuery.of(context).size.height / 40,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -160,15 +161,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildSocialBtnRow(){
+  Widget _buildSocialBtnRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         GestureDetector(
           onTap: () async {
-            try{
+            try {
               await AuthHelper.signInWithGoogle();
-            }catch(e){
+            } catch (e) {
               print(e);
             }
           },
@@ -180,10 +181,9 @@ class _LoginPageState extends State<LoginPage> {
               color: mainColor,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black26,
-                  offset: Offset(0,2),
-                  blurRadius: 6.0
-                ),
+                    color: Colors.black26,
+                    offset: Offset(0, 2),
+                    blurRadius: 6.0),
               ],
             ),
             child: Icon(
@@ -257,7 +257,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomPadding: false,
         backgroundColor: Color(0xfff2f3f7),
         body: Stack(
           children: [
